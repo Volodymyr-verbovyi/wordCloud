@@ -16,19 +16,26 @@ d = path.dirname(__file__) \
     else os.getcwd()
 subtitre = open(path.join(d, 'dataWord/VEED-subtitles_The3.txt')).read()
 
-# f = open('text.txt', 'r')
-# translator.detect(input_text)
+
 resultTranslate = translator.translate(subtitre, dest='ru')
 
 text = [subtitre, resultTranslate.text]
+#print(text)
 
-textToString = ' '.join(text)
+textToString = ' '.join(text).split()
 
-chars = '.,!-?'
 
-removeSymbols = textToString.translate(str.maketrans(' ', ' ', chars))
+finallist = []
+for element in textToString:
+    if len(element) > 3:
+        finallist.append(element)
+#print(finallist)
 
-print(removeSymbols)
+finallistString = ' '.join(finallist)
+
+chars = '.,!-?1234567890'
+
+removeSymbols = finallistString.translate(str.maketrans(' ', ' ', chars))
 
 x, y = np.ogrid[:300, :300]
 
@@ -36,7 +43,7 @@ mask = (x - 150) ** 2 + (y - 150) ** 2 > 130 ** 2
 mask = 255 * mask.astype(int)
 
 wc = WordCloud(background_color="white", repeat=True, mask=mask)
-wc.generate(removeSymbols)
+wc.generate(finallistString)
 
 plt.axis("off")
 plt.imshow(wc, interpolation="bilinear")
